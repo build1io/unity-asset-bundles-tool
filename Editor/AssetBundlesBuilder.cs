@@ -3,29 +3,13 @@
 using System;
 using System.IO;
 using UnityEditor;
-using UnityEditor.Build;
 using UnityEngine;
 
 namespace Build1.AssetBundlesTool.Editor
 {
-    internal sealed class AssetBundlesBuilder : IActiveBuildTargetChanged
+    internal static class AssetBundlesBuilder
     {
         private const string AssetBundlesDirectory = "Assets/StreamingAssets";
-
-        public int callbackOrder { get; }
-
-        public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
-        {
-            Debug.Log("AssetBundles: Current build target changed");
-            EditorApplication.delayCall += () =>
-            {
-                Build(EditorUserBuildSettings.activeBuildTarget);
-            };
-        }
-
-        /*
-         * Static.
-         */
 
         public static void Build(BuildTarget target, Action onComplete = null)
         {
