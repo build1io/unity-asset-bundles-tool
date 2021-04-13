@@ -9,18 +9,16 @@ namespace Build1.AssetBundlesTool.Editor
 {
     internal static class AssetBundlesBuilder
     {
-        private const string AssetBundlesDirectory = "Assets/StreamingAssets";
-
         public static void Build(BuildTarget target, Action onComplete = null)
         {
             Debug.Log($"AssetBundles: Building for {target}...");
 
             EditorApplication.delayCall += () =>
             {
-                if (!Directory.Exists(AssetBundlesDirectory))
-                    Directory.CreateDirectory(AssetBundlesDirectory);
+                if (!Directory.Exists(Application.streamingAssetsPath))
+                    Directory.CreateDirectory(Application.streamingAssetsPath);
 
-                var output = BuildPipeline.BuildAssetBundles(AssetBundlesDirectory, BuildAssetBundleOptions.StrictMode, target);
+                var output = BuildPipeline.BuildAssetBundles(Application.streamingAssetsPath, BuildAssetBundleOptions.StrictMode, target);
                 if (output == null) // No asset bundles.
                     ClearImpl();
                 else
@@ -32,7 +30,7 @@ namespace Build1.AssetBundlesTool.Editor
 
         public static void Clear(Action onComplete = null)
         {
-            if (!Directory.Exists(AssetBundlesDirectory))
+            if (!Directory.Exists(Application.streamingAssetsPath))
             {
                 onComplete?.Invoke();
                 return;
@@ -49,8 +47,23 @@ namespace Build1.AssetBundlesTool.Editor
 
         private static void ClearImpl()
         {
-            Directory.Delete(AssetBundlesDirectory, true);
-            File.Delete($"{AssetBundlesDirectory}.meta");
+            var names = AssetDatabase.GetAllAssetBundleNames();
+            foreach (var name in names)
+                ClearAssetBundle(name);
+            ClearAssetBundle("StreamingAssets");
+        }
+
+        private static void ClearAssetBundle(string bundleName)
+        {
+            var file01 = Path.Combine(Application.streamingAssetsPath, bundleName);
+            var file02 = Path.Combine(Application.streamingAssetsPath, bundleName) + ".manifest";
+            var file03 = Path.Combine(Application.streamingAssetsPath, bundleName) + ".manifest.meta";
+            var file04 = Path.Combine(Application.streamingAssetsPath, bundleName) + ".meta";
+            
+            File.Delete(file01);
+            File.Delete(file02);
+            File.Delete(file03);
+            File.Delete(file04);
         }
     }
 }
