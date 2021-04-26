@@ -1,7 +1,9 @@
 #if UNITY_EDITOR
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,61 +11,131 @@ namespace Build1.AssetBundlesTool.Editor
 {
     internal static class AssetBundlesBuilder
     {
-        public static void Build(BuildTarget target, Action onComplete = null)
+        /*
+         * Build.
+         */
+        
+        public static void Build(BuildTarget target, bool async = true, Action onComplete = null)
         {
-            Debug.Log($"AssetBundles: Building for {target}...");
+            Log($"Building for {target}...");
 
-            EditorApplication.delayCall += () =>
+            if (!async)
             {
-                if (!Directory.Exists(Application.streamingAssetsPath))
-                    Directory.CreateDirectory(Application.streamingAssetsPath);
-
-                var output = BuildPipeline.BuildAssetBundles(Application.streamingAssetsPath, BuildAssetBundleOptions.StrictMode, target);
-                if (output == null) // No asset bundles.
-                    ClearImpl();
-                else
-                    Debug.Log("AssetBundles: Done");
-                
-                onComplete?.Invoke();
-            };
-        }
-
-        public static void Clear(Action onComplete = null)
-        {
-            if (!Directory.Exists(Application.streamingAssetsPath))
-            {
+                BuildImpl(target);
+                Log("Done");
                 onComplete?.Invoke();
                 return;
             }
             
-            Debug.Log("AssetBundles: Cleaning...");
             EditorApplication.delayCall += () =>
             {
-                ClearImpl();
-                Debug.Log("AssetBundles: Done");
+                BuildImpl(target);
+                Log("Done");
                 onComplete?.Invoke();
             };
         }
+        
+        private static void BuildImpl(BuildTarget target)
+        {
+            if (!Directory.Exists(Application.streamingAssetsPath))
+                Directory.CreateDirectory(Application.streamingAssetsPath);
 
+            var output = BuildPipeline.BuildAssetBundles(Application.streamingAssetsPath, BuildAssetBundleOptions.StrictMode, target);
+            if (output != null) 
+                return;
+            
+            Log("No asset bundles to build. Cleaning existing bundles...");
+            ClearImpl();
+        }
+        
+        /*
+         * Clear.
+         */
+
+        public static void Clear(bool async = true, Action onComplete = null)
+        {
+            if (!Directory.Exists(Application.streamingAssetsPath))
+            {
+                Log("Bundles folder not found. There is nothing to clear.");
+                onComplete?.Invoke();
+                return;
+            }
+            
+            Log("Cleaning...");
+
+            if (!async)
+            {
+                ClearImpl();
+                Log("Done");
+                onComplete?.Invoke();
+                return;
+            }
+            
+            EditorApplication.delayCall += () =>
+            {
+                ClearImpl();
+                Log("Done");
+                onComplete?.Invoke();
+            };
+        }
+        
         private static void ClearImpl()
         {
-            var names = AssetDatabase.GetAllAssetBundleNames();
+            var names = AssetDatabase.GetAllAssetBundleNames().ToList();
+            names.Add("StreamingAssets");
+            
             foreach (var name in names)
                 ClearAssetBundle(name);
-            ClearAssetBundle("StreamingAssets");
         }
 
         private static void ClearAssetBundle(string bundleName)
         {
-            var file01 = Path.Combine(Application.streamingAssetsPath, bundleName);
-            var file02 = Path.Combine(Application.streamingAssetsPath, bundleName) + ".manifest";
-            var file03 = Path.Combine(Application.streamingAssetsPath, bundleName) + ".manifest.meta";
-            var file04 = Path.Combine(Application.streamingAssetsPath, bundleName) + ".meta";
+            var paths = GetBundleFilesPaths(bundleName);
+            foreach (var path in paths)
+                File.Delete(path);
+        }
+        
+        /*
+         * Check.
+         */
+        
+        public static bool CheckAssetBundles()
+        {
+            if (!Directory.Exists(Application.streamingAssetsPath))
+                return false;
             
-            File.Delete(file01);
-            File.Delete(file02);
-            File.Delete(file03);
-            File.Delete(file04);
+            var names = AssetDatabase.GetAllAssetBundleNames().ToList();
+            names.Add("StreamingAssets");
+            return names.All(CheckAssetBundle);
+        }
+
+        private static bool CheckAssetBundle(string bundleName)
+        {
+            return GetBundleFilesPaths(bundleName).All(File.Exists);
+        }
+        
+        /*
+         * Private.
+         */
+
+        private static IEnumerable<string> GetBundleFilesPaths(string bundleName)
+        {
+            return new[]
+            {
+                Path.Combine(Application.streamingAssetsPath, bundleName),
+                Path.Combine(Application.streamingAssetsPath, bundleName) + ".manifest",
+                Path.Combine(Application.streamingAssetsPath, bundleName) + ".manifest.meta",
+                Path.Combine(Application.streamingAssetsPath, bundleName) + ".meta"
+            };
+        }
+
+        /*
+         * Logging.
+         */
+
+        private static void Log(string message)
+        {
+            Debug.Log($"AssetBundles: {message}");
         }
     }
 }

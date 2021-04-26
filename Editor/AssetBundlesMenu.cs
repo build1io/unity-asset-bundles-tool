@@ -44,7 +44,9 @@ namespace Build1.AssetBundlesTool.Editor
         public static void AutoRebuildInfo()
         {
             EditorUtility.DisplayDialog("Auto Rebuild",
-                                        "When Enabled, asset bundles will be rebuilt when current target platform is changed.", 
+                                        "When Enabled, asset bundles will be rebuilt when the current target platform is changed.\n\n" +
+                                        "The same will happen before Play in the Editor if any inconsistency in Asset Bundles files list is found.\n\n" +
+                                        "NOTE: Currently, only Asset Bundles files (builds) list is analyzed. The tool doesn't track if some asset from some bundle was changed.", 
                                         "Got it!");
         }
         
@@ -57,7 +59,7 @@ namespace Build1.AssetBundlesTool.Editor
         [MenuItem("Build1/Asset Bundles/Rebuild", false, 51)]
         public static void Rebuild()
         {
-            AssetBundlesBuilder.Clear(Build);
+            AssetBundlesBuilder.Clear(true, Build);
         }
         
         [MenuItem("Build1/Asset Bundles/Build Android", false, 100)]
