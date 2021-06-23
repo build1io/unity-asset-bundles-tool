@@ -6,11 +6,17 @@ using UnityEngine;
 namespace Build1.AssetBundlesTool.Editor
 {
     [InitializeOnLoad]
-    internal static class AssetBundlesPlayProcessor
+    internal static class AssetBundlesProcessor
     {
-        static AssetBundlesPlayProcessor()
+        static AssetBundlesProcessor()
         {
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
+
+            if (AssetBundlesBuilder.CheckAssetBundlesBuilt())
+                return;
+            
+            Debug.Log("AssetBundles: Bundles not built. Building...");
+            AssetBundlesBuilder.Build(EditorUserBuildSettings.activeBuildTarget);
         }
 
         private static void OnPlayModeStateChanged(PlayModeStateChange state)

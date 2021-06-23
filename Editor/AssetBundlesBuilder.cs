@@ -12,6 +12,25 @@ namespace Build1.AssetBundlesTool.Editor
     internal static class AssetBundlesBuilder
     {
         /*
+         * Check.
+         */
+
+        public static bool CheckAssetBundlesBuilt()
+        {
+            var bundlesNames = AssetDatabase.GetAllAssetBundleNames();
+            if (!Directory.Exists(Application.streamingAssetsPath) && bundlesNames.Length != 0)
+                return false;
+
+            foreach (var bundlesName in bundlesNames)
+            {
+                if (CheckAssetBundle(bundlesName))
+                    return true;
+            }
+            
+            return false;
+        }
+        
+        /*
          * Build.
          */
         
@@ -34,7 +53,7 @@ namespace Build1.AssetBundlesTool.Editor
                 onComplete?.Invoke();
             };
         }
-        
+
         private static void BuildImpl(BuildTarget target)
         {
             if (!Directory.Exists(Application.streamingAssetsPath))
