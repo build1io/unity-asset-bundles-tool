@@ -3,7 +3,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Build1.AssetBundlesTool.Editor
+namespace Build1.UnityAssetBundlesTool.Editor
 {
     [InitializeOnLoad]
     internal static class AssetBundlesProcessor
@@ -12,7 +12,7 @@ namespace Build1.AssetBundlesTool.Editor
         {
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
 
-            if (AssetBundlesBuilder.CheckAssetBundlesBuilt())
+            if (AssetBundlesBuilder.CheckAssetBundlesBuilt() || !AssetBundlesBuilder.CheckAssetBundlesExist())
                 return;
             
             Debug.Log("AssetBundles: Bundles not built. Building...");
@@ -21,7 +21,7 @@ namespace Build1.AssetBundlesTool.Editor
 
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
-            if (state != PlayModeStateChange.ExitingEditMode || !AssetBundlesAutoRebuild.GetEnabled() || AssetBundlesBuilder.CheckAssetBundles()) 
+            if (state != PlayModeStateChange.ExitingEditMode || !AssetBundlesAutoRebuild.GetEnabled() || AssetBundlesBuilder.CheckAssetBundles() || !AssetBundlesBuilder.CheckAssetBundlesExist()) 
                 return;
             Debug.Log("AssetBundles: Bundles inconsistency found. Rebuilding...");
             AssetBundlesBuilder.Build(EditorUserBuildSettings.activeBuildTarget, false);

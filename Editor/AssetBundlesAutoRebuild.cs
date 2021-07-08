@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEditor.Build;
 using UnityEngine;
 
-namespace Build1.AssetBundlesTool.Editor
+namespace Build1.UnityAssetBundlesTool.Editor
 {
     internal sealed class AssetBundlesAutoRebuild : IActiveBuildTargetChanged
     {

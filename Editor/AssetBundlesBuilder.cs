@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace Build1.AssetBundlesTool.Editor
+namespace Build1.UnityAssetBundlesTool.Editor
 {
     internal static class AssetBundlesBuilder
     {
@@ -17,10 +17,10 @@ namespace Build1.AssetBundlesTool.Editor
 
         public static bool CheckAssetBundlesBuilt()
         {
-            var bundlesNames = AssetDatabase.GetAllAssetBundleNames();
-            if (!Directory.Exists(Application.streamingAssetsPath) && bundlesNames.Length != 0)
+            if (!Directory.Exists(Application.streamingAssetsPath) && CheckAssetBundlesExist())
                 return false;
 
+            var bundlesNames = AssetDatabase.GetAllAssetBundleNames();
             foreach (var bundlesName in bundlesNames)
             {
                 if (CheckAssetBundle(bundlesName))
@@ -28,6 +28,11 @@ namespace Build1.AssetBundlesTool.Editor
             }
             
             return false;
+        }
+
+        public static bool CheckAssetBundlesExist()
+        {
+            return AssetDatabase.GetAllAssetBundleNames().Length != 0;
         }
         
         /*
@@ -37,6 +42,12 @@ namespace Build1.AssetBundlesTool.Editor
         public static void Build(BuildTarget target, bool async = true, Action onComplete = null)
         {
             Log($"Building for {target}...");
+            
+            if (!CheckAssetBundlesExist())
+            {
+                Log("No bundles defined.");
+                return;
+            }
 
             if (!async)
             {

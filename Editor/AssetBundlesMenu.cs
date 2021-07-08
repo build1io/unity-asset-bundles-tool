@@ -2,7 +2,7 @@
 
 using UnityEditor;
 
-namespace Build1.AssetBundlesTool.Editor
+namespace Build1.UnityAssetBundlesTool.Editor
 {
     internal static class AssetBundlesMenu
     {
