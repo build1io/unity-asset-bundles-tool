@@ -12,7 +12,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
         {
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
 
-            if (AssetBundlesBuilder.CheckAssetBundlesBuilt() || !AssetBundlesBuilder.CheckAssetBundlesExist())
+            if (AssetBundlesBuilder.CheckAssetBundlesBuilt() || !AssetBundlesBuilder.CheckAssetBundlesExist(true))
                 return;
             
             Debug.Log("AssetBundles: Bundles not built. Building...");
@@ -21,7 +21,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
 
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
-            if (state != PlayModeStateChange.ExitingEditMode || !AssetBundlesAutoRebuild.GetEnabled() || AssetBundlesBuilder.CheckAssetBundles() || !AssetBundlesBuilder.CheckAssetBundlesExist()) 
+            if (state != PlayModeStateChange.ExitingEditMode || !AssetBundlesAutoRebuild.GetEnabled() || AssetBundlesBuilder.CheckAssetBundles() || !AssetBundlesBuilder.CheckAssetBundlesExist(true)) 
                 return;
             Debug.Log("AssetBundles: Bundles inconsistency found. Rebuilding...");
             AssetBundlesBuilder.Build(EditorUserBuildSettings.activeBuildTarget, false);

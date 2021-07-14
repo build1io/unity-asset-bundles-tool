@@ -12,7 +12,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
         
         public void OnActiveBuildTargetChanged(BuildTarget previousTarget, BuildTarget newTarget)
         {
-            if (!GetEnabled() || !AssetBundlesBuilder.CheckAssetBundlesExist())
+            if (!GetEnabled() || !AssetBundlesBuilder.CheckAssetBundlesExist(true))
                 return;
             
             Debug.Log("AssetBundles: Current build target changed. Rebuilding...");
