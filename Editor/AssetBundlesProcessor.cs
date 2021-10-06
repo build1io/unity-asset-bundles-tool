@@ -16,7 +16,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
 
-            if (AssetBundlesBuilder.CheckAssetBundlesBuilt() || !AssetBundlesBuilder.CheckAssetBundlesExist())
+            if (AssetBundlesBuilder.CheckAssetBundlesBuilt() || !AssetBundlesBuilder.CheckAssetBundlesExist(true))
                 return;
             
             Debug.Log("AssetBundles: Bundles not built. Building...");

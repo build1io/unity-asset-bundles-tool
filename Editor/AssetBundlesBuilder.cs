@@ -17,7 +17,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
 
         public static bool CheckAssetBundlesBuilt()
         {
-            if (!Directory.Exists(Application.streamingAssetsPath) && CheckAssetBundlesExist())
+            if (!Directory.Exists(Application.streamingAssetsPath) && CheckAssetBundlesExist(false))
                 return false;
 
             var bundlesNames = AssetDatabase.GetAllAssetBundleNames();
@@ -30,8 +30,10 @@ namespace Build1.UnityAssetBundlesTool.Editor
             return false;
         }
 
-        public static bool CheckAssetBundlesExist()
+        public static bool CheckAssetBundlesExist(bool removeUnusedAssetBundles)
         {
+            if (removeUnusedAssetBundles)
+                AssetDatabase.RemoveUnusedAssetBundleNames();
             return AssetDatabase.GetAllAssetBundleNames().Length != 0;
         }
         
@@ -43,7 +45,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
         {
             Log($"Building for {target}...");
             
-            if (!CheckAssetBundlesExist())
+            if (!CheckAssetBundlesExist(false))
             {
                 Log("No bundles defined.");
                 return;
