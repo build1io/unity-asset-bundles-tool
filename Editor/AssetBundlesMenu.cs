@@ -17,36 +17,36 @@ namespace Build1.UnityAssetBundlesTool.Editor
         [MenuItem(AutoRebuildEnabledMenuItem, false, 10)]
         public static void AutoRebuildEnabled()
         {
-            if (AssetBundlesAutoRebuild.SetEnabled(true))
+            if (AssetBundlesProcessor.SetEnabled(true))
                 UpdateMenu();
         }
 
         [MenuItem(AutoRebuildEnabledMenuItem, true, 10)]
         public static bool AutoRebuildEnabledValidation()
         {
-            return !AssetBundlesAutoRebuild.GetEnabled();
+            return !AssetBundlesProcessor.GetEnabled();
         }
         
         [MenuItem(AutoRebuildDisabledMenuItem, false, 11)]
         public static void AutoRebuildDisabled()
         {
-            if (AssetBundlesAutoRebuild.SetEnabled(false))
+            if (AssetBundlesProcessor.SetEnabled(false))
                 UpdateMenu();
         }
         
         [MenuItem(AutoRebuildDisabledMenuItem, true, 11)]
         public static bool AutoRebuildDisabledValidation()
         {
-            return AssetBundlesAutoRebuild.GetEnabled();
+            return AssetBundlesProcessor.GetEnabled();
         }
         
         [MenuItem("Build1/Asset Bundles/Auto Rebuild/Info", false, 40)]
         public static void AutoRebuildInfo()
         {
             EditorUtility.DisplayDialog("Auto Rebuild",
-                                        "When Enabled, asset bundles will be rebuilt when the current target platform is changed.\n\n" +
+                                        "When Enabled, asset bundles will be rebuilt when the current target platform is changed or when building process is initiated.\n\n" +
                                         "The same will happen before Play in the Editor if any inconsistency in Asset Bundles files list is found.\n\n" +
-                                        "NOTE: Currently, only Asset Bundles files (builds) list is analyzed. The tool doesn't track if some asset from some bundle was changed.", 
+                                        "NOTE: Currently, only Asset Bundles files (builds) list is analyzed. The tool doesn't track bundle content changes.", 
                                         "Got it!");
         }
         
@@ -110,7 +110,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
 
         private static void UpdateMenu()
         {
-            var enabled = AssetBundlesAutoRebuild.GetEnabled();
+            var enabled = AssetBundlesProcessor.GetEnabled();
             Menu.SetChecked(AutoRebuildEnabledMenuItem, enabled);
             Menu.SetChecked(AutoRebuildDisabledMenuItem, !enabled);
         }
