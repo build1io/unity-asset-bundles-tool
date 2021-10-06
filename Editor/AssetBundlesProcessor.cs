@@ -57,12 +57,16 @@ namespace Build1.UnityAssetBundlesTool.Editor
             
             AssetBundlesBuilder.Build(EditorUserBuildSettings.activeBuildTarget, false);
             BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(options);
+
+            Debug.Log("AssetBundles: Bundles were built before Building project");
         }
         
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
             if (state == PlayModeStateChange.ExitingEditMode && GetEnabled() && AssetBundlesBuilder.CheckAssetBundlesExist(true))
                 AssetBundlesBuilder.Build(EditorUserBuildSettings.activeBuildTarget, false);
+            else if (state == PlayModeStateChange.EnteredPlayMode && GetEnabled() && AssetBundlesBuilder.CheckAssetBundlesExist(false))
+                Debug.Log("AssetBundles: Bundles were built before Playing");
         }
     }
 }
