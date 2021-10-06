@@ -52,7 +52,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
 
         private static void OnBuildPlayer(BuildPlayerOptions options)
         {
-            if (!GetEnabled() || !AssetBundlesBuilder.CheckAssetBundlesExist())
+            if (!GetEnabled() || !AssetBundlesBuilder.CheckAssetBundlesExist(true))
                 return;
             
             AssetBundlesBuilder.Build(EditorUserBuildSettings.activeBuildTarget, false);
@@ -61,7 +61,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
         
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
-            if (state == PlayModeStateChange.ExitingEditMode && GetEnabled())
+            if (state == PlayModeStateChange.ExitingEditMode && GetEnabled() && AssetBundlesBuilder.CheckAssetBundlesExist(true))
                 AssetBundlesBuilder.Build(EditorUserBuildSettings.activeBuildTarget, false);
         }
     }
