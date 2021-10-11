@@ -29,7 +29,9 @@ namespace Build1.UnityAssetBundlesTool.Editor
 
         public static bool GetEnabled()
         {
-            return EditorPrefs.GetBool(AutoRebuildKey);
+            if (EditorPrefs.HasKey(AutoRebuildKey))
+                return EditorPrefs.GetBool(AutoRebuildKey);
+            return true;
         }
 
         public static bool SetEnabled(bool enabled)
@@ -52,13 +54,14 @@ namespace Build1.UnityAssetBundlesTool.Editor
 
         private static void OnBuildPlayer(BuildPlayerOptions options)
         {
-            if (!GetEnabled() || !AssetBundlesBuilder.CheckAssetBundlesExist(true))
-                return;
+            var buildAssetBundles = GetEnabled() && AssetBundlesBuilder.CheckAssetBundlesExist(true);
+            if (buildAssetBundles)
+                AssetBundlesBuilder.Build(EditorUserBuildSettings.activeBuildTarget, false);
             
-            AssetBundlesBuilder.Build(EditorUserBuildSettings.activeBuildTarget, false);
             BuildPlayerWindow.DefaultBuildMethods.BuildPlayer(options);
 
-            Debug.Log("AssetBundles: Bundles were built before Building project");
+            if (buildAssetBundles)
+                Debug.Log("AssetBundles: Bundles were built before Building project");
         }
         
         private static void OnPlayModeStateChanged(PlayModeStateChange state)
