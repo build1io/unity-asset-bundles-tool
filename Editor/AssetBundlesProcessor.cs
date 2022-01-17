@@ -15,12 +15,6 @@ namespace Build1.UnityAssetBundlesTool.Editor
             BuildPlayerWindow.RegisterBuildPlayerHandler(OnBuildPlayer);
             
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
-
-            if (AssetBundlesBuilder.CheckAssetBundlesBuilt() || !AssetBundlesBuilder.CheckAssetBundlesExist(true))
-                return;
-            
-            Debug.Log("AssetBundles: Bundles not built. Building...");
-            AssetBundlesBuilder.Build(EditorUserBuildSettings.activeBuildTarget);
         }
 
         /*
