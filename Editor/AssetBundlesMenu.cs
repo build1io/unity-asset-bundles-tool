@@ -6,8 +6,8 @@ namespace Build1.UnityAssetBundlesTool.Editor
 {
     internal static class AssetBundlesMenu
     {
-        private const string AutoRebuildEnabledMenuItem = "Build1/Asset Bundles/Auto Rebuild/Enable";
-        private const string AutoRebuildDisabledMenuItem = "Build1/Asset Bundles/Auto Rebuild/Disable";
+        private const string AutoRebuildEnabledMenuItem = "Tools/Build1/Asset Bundles/Auto Rebuild/Enable";
+        private const string AutoRebuildDisabledMenuItem = "Tools/Build1/Asset Bundles/Auto Rebuild/Disable";
         
         static AssetBundlesMenu()
         {
@@ -40,7 +40,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             return AssetBundlesProcessor.GetEnabled();
         }
         
-        [MenuItem("Build1/Asset Bundles/Auto Rebuild/Info", false, 40)]
+        [MenuItem("Tools/Build1/Asset Bundles/Auto Rebuild/Info", false, 40)]
         public static void AutoRebuildInfo()
         {
             EditorUtility.DisplayDialog("Auto Rebuild",
@@ -50,58 +50,28 @@ namespace Build1.UnityAssetBundlesTool.Editor
                                         "Got it!");
         }
         
-        [MenuItem("Build1/Asset Bundles/Build", false, 50)]
+        [MenuItem("Tools/Build1/Asset Bundles/Build", false, 50)]
         public static void Build()
         {
-            AssetBundlesBuilder.Build(EditorUserBuildSettings.activeBuildTarget);
+            AssetBundlesBuilder.Build(AssetBundlesProcessor.GetLocalBuildTargetTyped(), BuildAssetBundleOptions.StrictMode);
         }
         
-        [MenuItem("Build1/Asset Bundles/Rebuild", false, 51)]
+        [MenuItem("Tools/Build1/Asset Bundles/Rebuild", false, 51)]
         public static void Rebuild()
         {
-            AssetBundlesBuilder.Clear(true, Build);
+            AssetBundlesBuilder.Build(AssetBundlesProcessor.GetLocalBuildTargetTyped(), BuildAssetBundleOptions.StrictMode | BuildAssetBundleOptions.ForceRebuildAssetBundle);
         }
         
-        [MenuItem("Build1/Asset Bundles/Build Android", false, 100)]
-        public static void BuildAndroid()
-        {
-            AssetBundlesBuilder.Build(BuildTarget.Android);
-        }
-        
-        [MenuItem("Build1/Asset Bundles/Build IOS", false, 101)]
-        public static void BuildIOS()
-        {
-            AssetBundlesBuilder.Build(BuildTarget.iOS);
-        }
-        
-        [MenuItem("Build1/Asset Bundles/Build OSX", false, 150)]
-        public static void BuildOSX()
-        {
-            AssetBundlesBuilder.Build(BuildTarget.StandaloneOSX);
-        }
-
-        [MenuItem("Build1/Asset Bundles/Build Windows", false, 151)]
-        public static void BuildWindows()
-        {
-            AssetBundlesBuilder.Build(BuildTarget.StandaloneWindows);
-        }
-        
-        [MenuItem("Build1/Asset Bundles/Build Windows 64", false, 152)]
-        public static void BuildWindows64()
-        {
-            AssetBundlesBuilder.Build(BuildTarget.StandaloneWindows64);
-        }
-        
-        [MenuItem("Build1/Asset Bundles/Build WebGL", false, 200)]
-        public static void BuildWebGL()
-        {
-            AssetBundlesBuilder.Build(BuildTarget.WebGL);
-        }
-
-        [MenuItem("Build1/Asset Bundles/Clear", false, 250)]
+        [MenuItem("Tools/Build1/Asset Bundles/Clear", false, 100)]
         public static void Clear()
         {
             AssetBundlesBuilder.Clear();
+        }
+        
+        [MenuItem("Tools/Build1/Asset Bundles/Tools Window...", false, 150)]
+        public static void ToolsWindow()
+        {
+            AssetBundlesWindow.Open();
         }
         
         /*

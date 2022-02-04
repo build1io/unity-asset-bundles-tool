@@ -41,7 +41,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
          * Build.
          */
         
-        public static void Build(BuildTarget target, bool async = true, Action onComplete = null)
+        public static void Build(BuildTarget target, BuildAssetBundleOptions options, bool async = true, Action onComplete = null)
         {
             Log($"Building for {target}...");
             
@@ -53,7 +53,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
 
             if (!async)
             {
-                BuildImpl(target);
+                BuildImpl(target, options);
                 Log("Done");
                 onComplete?.Invoke();
                 return;
@@ -61,18 +61,18 @@ namespace Build1.UnityAssetBundlesTool.Editor
             
             EditorApplication.delayCall += () =>
             {
-                BuildImpl(target);
+                BuildImpl(target, options);
                 Log("Done");
                 onComplete?.Invoke();
             };
         }
 
-        private static void BuildImpl(BuildTarget target)
+        private static void BuildImpl(BuildTarget target, BuildAssetBundleOptions options)
         {
             if (!Directory.Exists(Application.streamingAssetsPath))
                 Directory.CreateDirectory(Application.streamingAssetsPath);
 
-            var output = BuildPipeline.BuildAssetBundles(Application.streamingAssetsPath, BuildAssetBundleOptions.StrictMode, target);
+            var output = BuildPipeline.BuildAssetBundles(Application.streamingAssetsPath, options, target);
             if (output != null) 
                 return;
             
