@@ -11,6 +11,15 @@ namespace Build1.UnityAssetBundlesTool.Editor
         
         private void OnGUI()
         {
+            var changed = false;
+            var enabled = !Application.isPlaying;
+            
+            if (GUI.enabled != enabled)
+            {
+                GUI.enabled = enabled;
+                changed = true;
+            }
+
             GUILayout.BeginVertical();
             GUILayout.Space(Padding);
                 
@@ -41,10 +50,10 @@ namespace Build1.UnityAssetBundlesTool.Editor
             GUILayout.Space(Padding);
             GUILayout.Space(76);
             
-            var enabled = AssetBundlesProcessor.GetEnabled();
-            var enabledNew = GUILayout.Toggle(enabled, "Auto rebuild");
-            if (enabled != enabledNew)
-                AssetBundlesProcessor.SetEnabled(enabledNew);
+            var autoRebuildEnabled = AssetBundlesProcessor.GetEnabled();
+            var autoRebuildEnabledNew = GUILayout.Toggle(autoRebuildEnabled, "Auto rebuild");
+            if (autoRebuildEnabled != autoRebuildEnabledNew)
+                AssetBundlesProcessor.SetEnabled(autoRebuildEnabledNew);
             
             GUILayout.FlexibleSpace();
             
@@ -53,6 +62,9 @@ namespace Build1.UnityAssetBundlesTool.Editor
 
             GUILayout.Space(Padding);
             GUILayout.EndVertical();
+            
+            if (changed)
+                GUI.enabled = !enabled;
         }
         
         /*
