@@ -68,7 +68,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             AssetBundlesBuilder.Clear();
         }
         
-        [MenuItem("Tools/Build1/Asset Bundles/Tools Window...", false, 150)]
+        [MenuItem("Tools/Build1/Asset Bundles/Tool Window...", false, 150)]
         public static void ToolsWindow()
         {
             AssetBundlesWindow.Open();
