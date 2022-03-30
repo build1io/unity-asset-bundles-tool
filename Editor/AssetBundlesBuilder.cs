@@ -84,7 +84,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
          * Clear.
          */
 
-        public static void Clear(bool async = true, Action onComplete = null)
+        public static void Clean(bool async = true, Action onComplete = null)
         {
             if (!Directory.Exists(Application.streamingAssetsPath))
             {

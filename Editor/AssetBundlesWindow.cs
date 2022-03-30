@@ -50,10 +50,17 @@ namespace Build1.UnityAssetBundlesTool.Editor
             GUILayout.Space(Padding);
             GUILayout.Space(76);
             
-            var autoRebuildEnabled = AssetBundlesProcessor.GetEnabled();
+            var autoRebuildEnabled = AssetBundlesProcessor.GetAutoRebuildEnabled();
             var autoRebuildEnabledNew = GUILayout.Toggle(autoRebuildEnabled, "Auto rebuild");
             if (autoRebuildEnabled != autoRebuildEnabledNew)
-                AssetBundlesProcessor.SetEnabled(autoRebuildEnabledNew);
+                AssetBundlesProcessor.SetAutoRebuildEnabled(autoRebuildEnabledNew);
+            
+            GUILayout.Space(10);
+            
+            var cleanCacheOnPlayEnabled = AssetBundlesProcessor.GetCleanCacheAfterPlayEnabled();
+            var cleanCacheOnPlayEnabledNew = GUILayout.Toggle(cleanCacheOnPlayEnabled, "Clean Cache after Play");
+            if (cleanCacheOnPlayEnabled != cleanCacheOnPlayEnabledNew)
+                AssetBundlesProcessor.SetCleanCacheAfterPlayEnabled(cleanCacheOnPlayEnabledNew);
             
             GUILayout.FlexibleSpace();
             
