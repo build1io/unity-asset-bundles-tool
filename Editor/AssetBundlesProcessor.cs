@@ -132,6 +132,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
                 {
                     if (GetCleanCacheAfterPlayEnabled())
                     {
+                        AssetBundle.UnloadAllAssetBundles(false);
                         Caching.ClearCache();
                         Debug.Log("AssetBundles: Cache cleaned");
                     }
