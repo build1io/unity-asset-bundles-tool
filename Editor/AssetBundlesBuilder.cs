@@ -54,7 +54,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             if (!async)
             {
                 BuildImpl(target, options);
-                Log("Done");
+                Log("Built.");
                 onComplete?.Invoke();
                 return;
             }
@@ -62,7 +62,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             EditorApplication.delayCall += () =>
             {
                 BuildImpl(target, options);
-                Log("Done");
+                Log("Built.");
                 onComplete?.Invoke();
             };
         }
@@ -98,7 +98,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             if (!async)
             {
                 ClearImpl();
-                Log("Done");
+                Log("Cleaned.");
                 onComplete?.Invoke();
                 return;
             }
@@ -106,7 +106,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             EditorApplication.delayCall += () =>
             {
                 ClearImpl();
-                Log("Done");
+                Log("Cleaned.");
                 onComplete?.Invoke();
             };
         }
