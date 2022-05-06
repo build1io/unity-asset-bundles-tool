@@ -69,15 +69,22 @@ namespace Build1.UnityAssetBundlesTool.Editor
         public static AssetBundleBuildTarget GetLocalBuildTarget()
         {
             if (!EditorPrefs.HasKey(LocalBuildTarget))
-                return AssetBundleBuildTarget.CurrentBuildTarget;
+                return AssetBundleBuildTarget.Current;
+            
             var str = EditorPrefs.GetString(LocalBuildTarget);
+            if (str == "CurrentBuildTarget")
+            {
+                EditorPrefs.SetString(LocalBuildTarget, AssetBundleBuildTarget.Current.ToString());
+                return AssetBundleBuildTarget.Current;
+            }
+            
             return (AssetBundleBuildTarget)Enum.Parse(typeof(AssetBundleBuildTarget), str, true);
         }
 
         public static BuildTarget GetLocalBuildTargetTyped()
         {
             var buildTarget = GetLocalBuildTarget();
-            if (buildTarget == AssetBundleBuildTarget.CurrentBuildTarget)
+            if (buildTarget == AssetBundleBuildTarget.Current)
                 return EditorUserBuildSettings.activeBuildTarget;
             return (BuildTarget)buildTarget;
         }
@@ -89,7 +96,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
 
             EditorPrefs.SetString(LocalBuildTarget, buildTarget.ToString());
 
-            if (buildTarget == AssetBundleBuildTarget.CurrentBuildTarget)
+            if (buildTarget == AssetBundleBuildTarget.Current)
                 Debug.Log("AssetBundles: Local build target set to Current Build Target.");
             else
                 Debug.Log($"AssetBundles: Local build target set to {buildTarget}.");
