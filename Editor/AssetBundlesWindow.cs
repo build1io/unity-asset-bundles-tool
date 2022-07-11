@@ -5,7 +5,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
 {
     public sealed class AssetBundlesWindow : EditorWindow
     {
-        private const int Width   = 560;
+        private const int Width   = 340;
         private const int Height  = 60;
         private const int Padding = 10;
         
