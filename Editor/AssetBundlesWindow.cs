@@ -84,7 +84,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             var centerWidth = (main.width - Width) * 0.5f;
             var centerHeight = (main.height - Height) * 0.5f;
             
-            var window = GetWindow<AssetBundlesWindow>(false, "Asset Bundles Tool", true);
+            var window = GetWindow<AssetBundlesWindow>(false, "Asset Bundles", true);
             window.position = new Rect(main.x + centerWidth, main.y + centerHeight, Width, Height);
             window.minSize = new Vector2(Width, Height);
         }
