@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEditor;
 using UnityEngine;
 
@@ -90,3 +92,5 @@ namespace Build1.UnityAssetBundlesTool.Editor
         }
     }
 }
+
+#endif

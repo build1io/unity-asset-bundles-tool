@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 namespace Build1.UnityAssetBundlesTool.Editor
 {
     public enum AssetBundleBuildTarget
@@ -11,3 +13,5 @@ namespace Build1.UnityAssetBundlesTool.Editor
         Windows64 = 19
     }
 }
+
+#endif
