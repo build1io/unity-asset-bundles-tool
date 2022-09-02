@@ -137,7 +137,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
                 }
                 case PlayModeStateChange.ExitingPlayMode:
                 {
-                    if (GetCleanCacheAfterPlayEnabled())
+                    if (GetCleanCacheAfterPlayEnabled() && AssetBundlesBuilder.CheckAssetBundlesExist(true))
                     {
                         AssetBundle.UnloadAllAssetBundles(false);
                         Caching.ClearCache();
