@@ -127,12 +127,10 @@ namespace Build1.UnityAssetBundlesTool.Editor
                 {
                     if (GetAutoRebuildEnabled() && AssetBundlesBuilder.CheckAssetBundlesExist(true))
                         AssetBundlesBuilder.Build(GetLocalBuildTargetTyped(), BuildAssetBundleOptions.StrictMode, false);
-                    return;
+                    break;
                 }
                 case PlayModeStateChange.EnteredPlayMode:
                 {
-                    if (GetAutoRebuildEnabled() && AssetBundlesBuilder.CheckAssetBundlesExist(false))
-                        Debug.Log("AssetBundles: Bundles were built before Playing");
                     break;
                 }
                 case PlayModeStateChange.ExitingPlayMode:
