@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 
+using Build1.UnityAssetBundlesTool.Editor.Windows;
 using UnityEditor;
 
 namespace Build1.UnityAssetBundlesTool.Editor
@@ -128,10 +129,16 @@ namespace Build1.UnityAssetBundlesTool.Editor
          * Tool Window.
          */
 
+        [MenuItem("Tools/Build1/Asset Bundles/Advanced Bundles Building...", false, 140)]
+        public static void AdvancedBuildWindowHandler()
+        {
+            AdvancedBuildWindow.Open();
+        }
+        
         [MenuItem("Tools/Build1/Asset Bundles/Tool Window...", false, 150)]
         public static void ToolsWindow()
         {
-            AssetBundlesWindow.Open();
+            ToolWindow.Open();
         }
 
         /*
