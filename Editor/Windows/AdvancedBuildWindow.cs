@@ -17,7 +17,7 @@ namespace Build1.UnityAssetBundlesTool.Editor.Windows
 
         private static AssetBundleBuildTargetFlags _targets = AssetBundleBuildTargetFlags.iOS;
         private static string                      _path    = "/Builds/Palaces/";
-        private static string                      _pattern = "{0}_{1}_016";
+        private static string                      _pattern = "{0}_013_{1}";
         private static Dictionary<string, bool>    _bundles = new();
 
         private void OnGUI()
