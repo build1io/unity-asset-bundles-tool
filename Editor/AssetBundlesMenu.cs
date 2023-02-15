@@ -23,33 +23,33 @@ namespace Build1.UnityAssetBundlesTool.Editor
          * Auto Rebuild.
          */
         
-        [MenuItem(AutoRebuildEnabledMenuItem, false, 10)]
+        [MenuItem(AutoRebuildEnabledMenuItem, false, 1010)]
         public static void AutoRebuildEnabled()
         {
             if (AssetBundlesProcessor.SetAutoRebuildEnabled(true))
                 UpdateMenu();
         }
 
-        [MenuItem(AutoRebuildEnabledMenuItem, true, 10)]
+        [MenuItem(AutoRebuildEnabledMenuItem, true, 1010)]
         public static bool AutoRebuildEnabledValidation()
         {
             return !AssetBundlesProcessor.GetAutoRebuildEnabled();
         }
 
-        [MenuItem(AutoRebuildDisabledMenuItem, false, 11)]
+        [MenuItem(AutoRebuildDisabledMenuItem, false, 1011)]
         public static void AutoRebuildDisabled()
         {
             if (AssetBundlesProcessor.SetAutoRebuildEnabled(false))
                 UpdateMenu();
         }
 
-        [MenuItem(AutoRebuildDisabledMenuItem, true, 11)]
+        [MenuItem(AutoRebuildDisabledMenuItem, true, 1011)]
         public static bool AutoRebuildDisabledValidation()
         {
             return AssetBundlesProcessor.GetAutoRebuildEnabled();
         }
 
-        [MenuItem(AutoRebuildInfoMenuItem, false, 40)]
+        [MenuItem(AutoRebuildInfoMenuItem, false, 1040)]
         public static void AutoRebuildInfo()
         {
             EditorUtility.DisplayDialog("Auto Rebuild",
@@ -63,33 +63,33 @@ namespace Build1.UnityAssetBundlesTool.Editor
          * Clean Cache After Play.
          */
         
-        [MenuItem(CleanCacheAfterPlayEnabledMenuItem, false, 20)]
+        [MenuItem(CleanCacheAfterPlayEnabledMenuItem, false, 1020)]
         public static void CleanCacheAfterPlayEnabled()
         {
             if (AssetBundlesProcessor.SetCleanCacheAfterPlayEnabled(true))
                 UpdateMenu();
         }
 
-        [MenuItem(CleanCacheAfterPlayEnabledMenuItem, true, 20)]
+        [MenuItem(CleanCacheAfterPlayEnabledMenuItem, true, 1020)]
         public static bool CleanCacheAfterPlayEnabledValidation()
         {
             return !AssetBundlesProcessor.GetCleanCacheAfterPlayEnabled();
         }
 
-        [MenuItem(CleanCacheAfterPlayDisabledMenuItem, false, 21)]
+        [MenuItem(CleanCacheAfterPlayDisabledMenuItem, false, 1021)]
         public static void CleanCacheAfterPlayDisabled()
         {
             if (AssetBundlesProcessor.SetCleanCacheAfterPlayEnabled(false))
                 UpdateMenu();
         }
 
-        [MenuItem(CleanCacheAfterPlayDisabledMenuItem, true, 21)]
+        [MenuItem(CleanCacheAfterPlayDisabledMenuItem, true, 1021)]
         public static bool CleanCacheAfterPlayDisabledValidation()
         {
             return AssetBundlesProcessor.GetCleanCacheAfterPlayEnabled();
         }
         
-        [MenuItem(CleanCacheAfterPlayInfoMenuItem, false, 50)]
+        [MenuItem(CleanCacheAfterPlayInfoMenuItem, false, 1050)]
         public static void CleanCacheAfterPlayInfo()
         {
             EditorUtility.DisplayDialog("Cache",
@@ -102,13 +102,13 @@ namespace Build1.UnityAssetBundlesTool.Editor
          * Build.
          */
 
-        [MenuItem("Tools/Build1/Asset Bundles/Build", false, 50)]
+        [MenuItem("Tools/Build1/Asset Bundles/Build", false, 1050)]
         public static void Build()
         {
             AssetBundlesBuilder.Build(AssetBundlesProcessor.GetLocalBuildTargetTyped(), BuildAssetBundleOptions.StrictMode);
         }
 
-        [MenuItem("Tools/Build1/Asset Bundles/Rebuild", false, 51)]
+        [MenuItem("Tools/Build1/Asset Bundles/Rebuild", false, 1051)]
         public static void Rebuild()
         {
             AssetBundlesBuilder.Build(AssetBundlesProcessor.GetLocalBuildTargetTyped(), BuildAssetBundleOptions.StrictMode | BuildAssetBundleOptions.ForceRebuildAssetBundle);
@@ -118,7 +118,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
          * Clean.
          */
         
-        [MenuItem("Tools/Build1/Asset Bundles/Clean", false, 100)]
+        [MenuItem("Tools/Build1/Asset Bundles/Clean", false, 1100)]
         public static void Clean()
         {
             AssetBundlesBuilder.Clean();
@@ -128,7 +128,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
          * Tool Window.
          */
 
-        [MenuItem("Tools/Build1/Asset Bundles/Tool Window...", false, 150)]
+        [MenuItem("Tools/Build1/Asset Bundles/Tool Window...", false, 1150)]
         public static void ToolsWindow()
         {
             AssetBundlesWindow.Open();
