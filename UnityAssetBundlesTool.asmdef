@@ -1,7 +1,9 @@
 {
     "name": "AssetBundles",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "UnityEGUI"
+    ],
     "includePlatforms": [
         "Editor"
     ],

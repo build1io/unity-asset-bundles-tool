@@ -3,7 +3,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Build1.UnityAssetBundlesTool.Editor.Windows
+namespace Build1.UnityAssetBundlesTool.Editor
 {
     internal sealed class ToolWindow : EditorWindow
     {
