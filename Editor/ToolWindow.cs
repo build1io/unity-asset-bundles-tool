@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Build1.UnityAssetBundlesTool.Editor
 {
-    public sealed class AssetBundlesWindow : EditorWindow
+    internal sealed class ToolWindow : EditorWindow
     {
         private const int Width   = 340;
         private const int Height  = 60;
@@ -86,7 +86,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             var centerWidth = (main.width - Width) * 0.5f;
             var centerHeight = (main.height - Height) * 0.5f;
             
-            var window = GetWindow<AssetBundlesWindow>(false, "Asset Bundles", true);
+            var window = GetWindow<ToolWindow>(false, "Asset Bundles", true);
             window.position = new Rect(main.x + centerWidth, main.y + centerHeight, Width, Height);
             window.minSize = new Vector2(Width, Height);
         }
