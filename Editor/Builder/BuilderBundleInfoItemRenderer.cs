@@ -29,7 +29,8 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
 
                 EGUI.Horizontally(() =>
                 {
-                    EGUI.Property(Item, Item.IncludeInBuildSequence, nameof(Item.IncludeInBuildSequence), BooleanRenderMode.Dropdown, EGUI.ButtonHeight04);
+                    EGUI.Property(Item, Item.IncludeInBuildSequence, nameof(Item.IncludeInBuildSequence), BooleanRenderMode.Toggle, EGUI.ButtonHeight04);
+                    EGUI.Space();
                     EGUI.Button("Exclude", EGUI.Width(203)).OnClick(() =>
                     {
                         EGUI.Alert("Asset Bundles Builder", $"Are you sure you want to exclude \"{Item.Name}\" bundle from the scope of the Builder?\n\nThis can be reverted via manual config editing and Builder windows reopening.", (result) =>
