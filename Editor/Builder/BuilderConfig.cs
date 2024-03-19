@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using UnityEditor;
 
 namespace Build1.UnityAssetBundlesTool.Editor.Builder
 {
@@ -11,16 +12,17 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
         [JsonProperty("platforms")]      public AssetBundleBuildTargetFlags Platforms     { get; private set; }
         [JsonProperty("build_path")]     public string                      BuildPath     { get; private set; }
         [JsonProperty("naming_pattern")] public string                      NamingPattern { get; private set; }
+        [JsonProperty("options")]        public BuildAssetBundleOptions     Options       { get; private set; }
         [JsonProperty("bundles")]        public List<BuilderBundleInfo>     Bundles       { get; private set; }
 
         [JsonIgnore] public bool IsDirty { get; private set; }
-        
+
         private BuilderConfig() { }
-        
+
         /*
          * Public.
          */
-        
+
         public void SetDirty()
         {
             IsDirty = true;
@@ -30,7 +32,7 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
         {
             IsDirty = false;
         }
-        
+
         /*
          * Serialization.
          */
@@ -38,6 +40,9 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
+            if (Options == 0)
+                Options = BuildAssetBundleOptions.AssetBundleStripUnityVersion | BuildAssetBundleOptions.StrictMode;
+            
             Bundles ??= new List<BuilderBundleInfo>();
         }
 

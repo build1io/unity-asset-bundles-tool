@@ -23,13 +23,15 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
             var platforms = config.Platforms;
             var buildPath = config.BuildPath;
             var namingPattern = config.NamingPattern;
+            var options = config.Options;
             
             EGUI.Property(config, config.Platforms, nameof(config.Platforms));
             EGUI.Property(config, config.BuildPath, nameof(config.BuildPath));
             EGUI.Property(config, config.NamingPattern, nameof(config.NamingPattern));
+            EGUI.Property(config, config.Options, nameof(config.Options));
             EGUI.Space(18);
-            
-            if (platforms != config.Platforms || buildPath != config.BuildPath || namingPattern != config.NamingPattern)
+
+            if (platforms != config.Platforms || buildPath != config.BuildPath || namingPattern != config.NamingPattern || options != config.Options)
                 config.SetDirty();
             
             EGUI.MessageBox("Asset bundles list updates automatically depending on the bundles list in the project settings.", MessageType.Info);

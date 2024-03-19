@@ -21,7 +21,7 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
             DefaultValueHandling = DefaultValueHandling.Ignore
         };
 
-        public BuilderConfig Config     { get; }
+        public BuilderConfig Config { get; }
 
         public BuilderModel()
         {
@@ -101,7 +101,7 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
             SaveConfig();
 
             Config.ResetDirty();
-            
+
             foreach (var info in Config.Bundles)
                 info.ResetDirty();
         }
@@ -140,7 +140,7 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
                 Directory.CreateDirectory(path);
                 Debug.Log($"Asset Bundles Builder: Build folder created. Path: {path.Replace(Application.dataPath, string.Empty)}");
             }
-            
+
             foreach (Enum target in Enum.GetValues(Config.Platforms.GetType()))
             {
                 if (!Config.Platforms.HasFlag(target))
@@ -172,7 +172,7 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
 
                 BuildPipeline.BuildAssetBundles(platformPath,
                                                 builds.ToArray(),
-                                                BuildAssetBundleOptions.AssetBundleStripUnityVersion | BuildAssetBundleOptions.StrictMode,
+                                                Config.Options,
                                                 FlagValueToTarget((AssetBundleBuildTargetFlags)target));
 
                 File.Delete(Path.Combine(platformPath, target.ToString()));
@@ -183,22 +183,22 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
                                     .Replace("{name}", "{0}")
                                     .Replace("{platform}", "{1}")
                                     .Replace("{version}", "{2}");
-                
+
                 foreach (var filePath in files)
                 {
                     if (filePath.Contains("DS_Store"))
                         continue;
-                    
+
                     if (filePath.EndsWith(".manifest"))
                     {
                         var extension = Path.GetExtension(filePath);
-                        
+
                         var index = filePath.Replace(extension, string.Empty).LastIndexOf("/", StringComparison.Ordinal) + 1;
                         var name = filePath[index..].Replace(extension, string.Empty);
 
                         var info = Config.Bundles.First(i => i.Name == name);
                         var filePathNew = filePath[..index] + string.Format(pattern, name, target.ToString().ToLower(), info.Version) + extension;
-                        
+
                         File.Move(filePath, filePathNew);
                     }
                     else
@@ -207,7 +207,7 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
                         var name = filePath[index..];
                         var info = Config.Bundles.First(i => i.Name == name);
                         var filePathNew = filePath[..index] + string.Format(pattern, name, target.ToString().ToLower(), info.Version);
-                        
+
                         File.Move(filePath, filePathNew);
                     }
                 }
