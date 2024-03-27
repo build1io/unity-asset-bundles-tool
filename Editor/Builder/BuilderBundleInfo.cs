@@ -3,7 +3,7 @@
 using System;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
-using UnityEngine;
+using UnityEditor;
 
 namespace Build1.UnityAssetBundlesTool.Editor.Builder
 {
@@ -18,12 +18,12 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
         {
             get
             {
-                var key = $"bbi_{Id}";
-                if (PlayerPrefs.HasKey(key))
-                    return PlayerPrefs.GetInt(key) == 1;
+                var key = $"b1_iibs_{Id}";
+                if (EditorPrefs.HasKey(key))
+                    return EditorPrefs.GetInt(key) == 1;
                 return true;
             }
-            private set => PlayerPrefs.SetInt($"bbi_{Id}", value ? 1 : 0);
+            private set => EditorPrefs.SetInt($"b1_iibs_{Id}", value ? 1 : 0);
         }
 
         [JsonIgnore] public bool IsDirty { get; private set; }
