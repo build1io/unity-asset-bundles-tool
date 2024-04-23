@@ -43,6 +43,8 @@ namespace Build1.UnityAssetBundlesTool.Editor
         
         public static void Build(BuildTarget target, BuildAssetBundleOptions options, bool async = true, Action onComplete = null)
         {
+            var start = DateTime.UtcNow;
+            
             Log($"Building for {target}...");
             
             if (!CheckAssetBundlesExist(false))
@@ -54,7 +56,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             if (!async)
             {
                 BuildImpl(target, options);
-                Log("Built.");
+                Log($"Done in {(DateTime.UtcNow - start).TotalSeconds:n0}s");
                 onComplete?.Invoke();
                 return;
             }
@@ -62,7 +64,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             EditorApplication.delayCall += () =>
             {
                 BuildImpl(target, options);
-                Log("Built.");
+                Log($"Done in {(DateTime.UtcNow - start).TotalSeconds:n0}s");
                 onComplete?.Invoke();
             };
         }
