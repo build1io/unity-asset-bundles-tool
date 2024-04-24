@@ -224,10 +224,10 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
             }
 
             foreach (var pair in targetTimes)
-                Debug.Log($"Asset Bundles Builder: {pair.Key} build time: {pair.Value.ToTimeFormatted()}");
+                Debug.Log($"Asset Bundles Builder: {pair.Key} build time: {pair.Value::mm\\:ss}");
 
             var totalTime = DateTime.UtcNow - start;
-            Debug.Log($"Asset Bundles Builder: Total build time: {totalTime.ToTimeFormatted()}");
+            Debug.Log($"Asset Bundles Builder: Total build time: {totalTime::mm\\:ss}");
         }
 
         private BuildTarget FlagValueToTarget(AssetBundleBuildTargetFlags flag)
