@@ -141,6 +141,9 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
                 Debug.Log($"Asset Bundles Builder: Build folder created. Path: {path.Replace(Application.dataPath, string.Empty)}");
             }
 
+            var start = DateTime.UtcNow;
+            var targetTimes = new Dictionary<Enum, TimeSpan>();
+            
             foreach (Enum target in Enum.GetValues(Config.Platforms.GetType()))
             {
                 if (!Config.Platforms.HasFlag(target))
@@ -169,6 +172,9 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
                         assetNames = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundle)
                     });
                 }
+                
+                
+                var startForTarget = DateTime.UtcNow;
 
                 BuildPipeline.BuildAssetBundles(platformPath,
                                                 builds.ToArray(),
@@ -212,8 +218,15 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
                     }
                 }
 
+                targetTimes.Add(target, DateTime.UtcNow - startForTarget);
+                
                 Debug.Log($"Asset Bundles Builder: Built for {target}");
             }
+
+            foreach (var pair in targetTimes)
+                Debug.Log($"Asset Bundles Builder: {pair.Key} build time: {pair.Value.TotalSeconds:n0}s");    
+            
+            Debug.Log($"Asset Bundles Builder: Total build time: {(DateTime.UtcNow - start).TotalSeconds:n0}s");
         }
 
         private BuildTarget FlagValueToTarget(AssetBundleBuildTargetFlags flag)
