@@ -56,7 +56,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             if (!async)
             {
                 BuildImpl(target, options);
-                Log($"Done in {(DateTime.UtcNow - start).TotalSeconds:n0}s");
+                Log($"Done in {(DateTime.UtcNow - start).ToTimeFormatted()}");
                 onComplete?.Invoke();
                 return;
             }
@@ -64,7 +64,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             EditorApplication.delayCall += () =>
             {
                 BuildImpl(target, options);
-                Log($"Done in {(DateTime.UtcNow - start).TotalSeconds:n0}s");
+                Log($"Done in {(DateTime.UtcNow - start).ToTimeFormatted()}");
                 onComplete?.Invoke();
             };
         }
