@@ -126,7 +126,7 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
                 return;
             }
 
-            if (!Config.Bundles.Any(i => i.IncludeInBuildSequence))
+            if (!Config.Bundles.Any(i => i.IncludeInBuildSequence && !i.ExcludeFromBuilderScope))
             {
                 EGUI.Alert("Asset Bundles Builder", "No bundles included in build sequence.");
                 return;
@@ -172,7 +172,6 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
                         assetNames = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundle)
                     });
                 }
-                
                 
                 var startForTarget = DateTime.UtcNow;
 
