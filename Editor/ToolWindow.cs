@@ -60,7 +60,7 @@ namespace Build1.UnityAssetBundlesTool.Editor
             GUILayout.Space(10);
             
             var cleanCacheOnPlayEnabled = AssetBundlesProcessor.GetCleanCacheAfterPlayEnabled();
-            var cleanCacheOnPlayEnabledNew = GUILayout.Toggle(cleanCacheOnPlayEnabled, "Clean Cache after Play");
+            var cleanCacheOnPlayEnabledNew = GUILayout.Toggle(cleanCacheOnPlayEnabled, new GUIContent("CCaP*", "Clean cache after Play. Removes loaded remote asset bundles from local cache.") );
             if (cleanCacheOnPlayEnabled != cleanCacheOnPlayEnabledNew)
                 AssetBundlesProcessor.SetCleanCacheAfterPlayEnabled(cleanCacheOnPlayEnabledNew);
             
