@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Build1.UnityEGUI;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
@@ -122,13 +121,17 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
 
             if (platforms == 0)
             {
-                EGUI.Alert("Asset Bundles Builder", "No platforms selected for building.");
+                #if UNITY_EDITOR
+                UnityEGUI.EGUI.Alert("Asset Bundles Builder", "No platforms selected for building.");
+                #endif
                 return;
             }
 
             if (!Config.Bundles.Any(i => i.IncludeInBuildSequence && !i.ExcludeFromBuilderScope))
             {
-                EGUI.Alert("Asset Bundles Builder", "No bundles included in build sequence.");
+                #if UNITY_EDITOR
+                UnityEGUI.EGUI.Alert("Asset Bundles Builder", "No bundles included in build sequence.");
+                #endif
                 return;
             }
 
@@ -143,7 +146,7 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
 
             var start = DateTime.UtcNow;
             var targetTimes = new Dictionary<Enum, TimeSpan>();
-            
+
             foreach (Enum target in Enum.GetValues(Config.Platforms.GetType()))
             {
                 if (!Config.Platforms.HasFlag(target))
@@ -172,13 +175,16 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
                         assetNames = AssetDatabase.GetAssetPathsFromAssetBundle(assetBundle)
                     });
                 }
-                
+
                 var startForTarget = DateTime.UtcNow;
 
-                BuildPipeline.BuildAssetBundles(platformPath,
+                var manifest = BuildPipeline.BuildAssetBundles(platformPath,
                                                 builds.ToArray(),
                                                 Config.Options,
                                                 FlagValueToTarget((AssetBundleBuildTargetFlags)target));
+                
+                if (manifest == null)
+                    throw new Exception($"Build failed for {target}");
 
                 File.Delete(Path.Combine(platformPath, target.ToString()));
                 File.Delete(Path.Combine(platformPath, target + ".manifest"));
@@ -218,7 +224,116 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
                 }
 
                 targetTimes.Add(target, DateTime.UtcNow - startForTarget);
+
+                Debug.Log($"Asset Bundles Builder: Built for {target}");
+            }
+
+            foreach (var pair in targetTimes)
+                Debug.Log($"Asset Bundles Builder: {pair.Key} build time: {pair.Value:mm\\:ss}");
+
+            var totalTime = DateTime.UtcNow - start;
+            Debug.Log($"Asset Bundles Builder: Total build time: {totalTime:mm\\:ss}");
+        }
+
+        public void Build(string bundleName,
+                          AssetBundleBuildTargetFlags platforms,
+                          string buildPath,
+                          string namingPattern,
+                          BuildAssetBundleOptions options)
+        {
+            var path = Path.Join(Application.dataPath, "../", buildPath);
+            path = Path.GetFullPath(path);
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                Debug.Log($"Asset Bundles Builder: Build folder created. Path: {path.Replace(Application.dataPath, string.Empty)}");
+            }
+            
+            var start = DateTime.UtcNow;
+            var targetTimes = new Dictionary<Enum, TimeSpan>();
+
+            foreach (Enum target in Enum.GetValues(platforms.GetType()))
+            {
+                if (!platforms.HasFlag(target))
+                    continue;
+
+                Debug.Log($"Asset Bundles Builder: Building for {target}...");
+
+                var platformPath = path;
+                if (!Directory.Exists(platformPath))
+                    Directory.CreateDirectory(platformPath);
+
+                var builds = new List<AssetBundleBuild>
+                {
+                    new()
+                    {
+                        assetBundleName = bundleName,
+                        assetNames = AssetDatabase.GetAssetPathsFromAssetBundle(bundleName)
+                    }
+                };
+
+                var startForTarget = DateTime.UtcNow;
+
+                var manifest = BuildPipeline.BuildAssetBundles(platformPath,
+                                                               builds.ToArray(),
+                                                               options,
+                                                               FlagValueToTarget((AssetBundleBuildTargetFlags)target));
                 
+                if (manifest == null)
+                    throw new Exception($"Build failed for {target}");
+
+                if (platformPath.LastIndexOf("/", StringComparison.Ordinal) == platformPath.Length - 1)
+                    platformPath = platformPath.Substring(0, platformPath.Length - 1);
+                
+                var folderFileName = platformPath.Substring(platformPath.LastIndexOf("/", StringComparison.Ordinal)).Replace("/", "");
+                var folderFilePath = Path.Combine(platformPath, folderFileName);
+                
+                File.Delete(folderFilePath);
+                File.Delete(folderFilePath + ".manifest");
+                
+                var files = Directory.GetFiles(platformPath);
+                var pattern = namingPattern
+                             .Replace("{name}", "{0}")
+                             .Replace("{platform}", "{1}")
+                             .Replace("{version}", "{2}");
+                
+                foreach (var filePath in files)
+                {
+                    if (filePath.Contains("DS_Store"))
+                        continue;
+
+                    if (filePath.EndsWith(bundleName))
+                    {
+                        var index = filePath.LastIndexOf("/", StringComparison.Ordinal) + 1;
+                        var name = filePath[index..];
+                        var info = Config.Bundles.First(i => i.Name == name);
+                        var filePathNew = filePath[..index] + string.Format(pattern, name, target.ToString().ToLower(), info.Version);
+                        
+                        if (File.Exists(filePathNew))
+                            File.Delete(filePathNew);
+                
+                        File.Move(filePath, filePathNew);
+                    }
+                    else if (filePath.EndsWith($"{bundleName}.manifest"))
+                    {
+                        var extension = Path.GetExtension(filePath);
+                
+                        var index = filePath.Replace(extension, string.Empty).LastIndexOf("/", StringComparison.Ordinal) + 1;
+                        var name = filePath[index..].Replace(extension, string.Empty);
+                
+                        var info = Config.Bundles.First(i => i.Name == name);
+                        var filePathNew = filePath[..index] + string.Format(pattern, name, target.ToString().ToLower(), info.Version) + extension;
+                
+                        if (File.Exists(filePathNew))
+                            File.Delete(filePathNew);
+                        
+                        File.Move(filePath, filePathNew);
+                    }
+                }
+
+                targetTimes.Add(target, DateTime.UtcNow - startForTarget);
+
                 Debug.Log($"Asset Bundles Builder: Built for {target}");
             }
 

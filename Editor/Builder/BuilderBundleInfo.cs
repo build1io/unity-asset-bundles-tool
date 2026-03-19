@@ -34,6 +34,12 @@ namespace Build1.UnityAssetBundlesTool.Editor.Builder
          * Public.
          */
 
+        public void SetVersion(int version)
+        {
+            Version = version;
+            SetDirty();
+        }
+        
         public void IncrementVersion()
         {
             Version++;

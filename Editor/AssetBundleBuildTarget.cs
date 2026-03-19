@@ -2,7 +2,7 @@
 
 namespace Build1.UnityAssetBundlesTool.Editor
 {
-    internal enum AssetBundleBuildTarget
+    public enum AssetBundleBuildTarget
     {
         Current   = -2,
         iOS       = 9,

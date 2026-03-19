@@ -5,7 +5,7 @@ using System;
 namespace Build1.UnityAssetBundlesTool.Editor
 {
     [Flags]
-    internal enum AssetBundleBuildTargetFlags
+    public enum AssetBundleBuildTargetFlags
     {
         iOS       = 1 << 0,
         Android   = 1 << 1,
