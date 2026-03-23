@@ -1,8 +1,6 @@
-#if UNITY_EDITOR
-
 using System;
 
-namespace Build1.UnityAssetBundlesTool.Editor
+namespace Build1.UnityAssetBundlesTool
 {
     [Flags]
     public enum AssetBundleBuildTargetFlags
@@ -14,5 +12,3 @@ namespace Build1.UnityAssetBundlesTool.Editor
         Windows64 = 1 << 4
     }
 }
-
-#endif

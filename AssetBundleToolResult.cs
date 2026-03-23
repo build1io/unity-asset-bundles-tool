@@ -1,6 +1,4 @@
-#if UNITY_EDITOR
-
-namespace Build1.UnityAssetBundlesTool.Editor
+namespace Build1.UnityAssetBundlesTool
 {
     public enum AssetBundleToolResult
     {
@@ -9,5 +7,3 @@ namespace Build1.UnityAssetBundlesTool.Editor
         BuildError     = 2
     }
 }
-
-#endif

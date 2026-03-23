@@ -48,7 +48,7 @@ namespace Build1.UnityAssetBundlesTool
                                                                                  AssetBundleBuildTargetFlags platforms, 
                                                                                  string buildPath, 
                                                                                  string namingPattern, 
-                                                                                 BuildAssetBundleOptions options)
+                                                                                 BuildAssetBundleOptions options = BuildAssetBundleOptions.StrictMode | BuildAssetBundleOptions.AssetBundleStripUnityVersion)
         {
             var model = new BuilderModel();
             var bundleInfo = model.Config.Bundles.FirstOrDefault(info => info.Name == bundleName);
