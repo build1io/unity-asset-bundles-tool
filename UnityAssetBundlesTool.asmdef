@@ -1,5 +1,5 @@
 {
-    "name": "AssetBundles",
+    "name": "Build1.UnityAssetBundlesTool",
     "rootNamespace": "",
     "references": [
         "UnityEGUI"
